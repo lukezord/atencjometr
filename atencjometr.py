@@ -30,16 +30,19 @@ from ld import user, apkey, secret, accountkey
 
 api = wykop.WykopAPI(apkey, secret, output='clear')
 api.authenticate(user, accountkey)
+profile = api.get_profile(user)
 
-# zapisujemy dane do pliku
+profile["followers"]
+print "Obserwujacy:", profile.followers #liczymy suby
 
-with io.open('followers.txt', 'w', encoding='utf-8') as f:
-    f.write(unicode(json.dumps(api.get_profile_followers(user), ensure_ascii=False)))
+profile["following"]
+print "Obserwujesz:", profile.following #liczymy zasubowanych
+"""
+subnames = api.get_profile_followers(user)
+subnames["login"]
+print "Obserwujacy:", subnames.login #nie dziala ;_;
 
-with io.open('followed.txt', 'w', encoding='utf-8') as f:
-    f.write(unicode(json.dumps(api.get_profile_followed(user), ensure_ascii=False)))
-
-
+"""
 
 
 

@@ -7,11 +7,11 @@ TODO:
 - dodac ranking
 - monitorowanie sub4sub
 - zrzut do sqla
-- pobiera 25 pozycji z obserwujacych - REST next page? - nie wiem jak ale sie dowiem :| na chwile obecna jest rak XD
+
 """
 #MYSQL - logowanie do bazy - na pozniej
-
-"""config = {
+"""
+config = {
 
     'user': '',
     'password': '',

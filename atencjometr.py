@@ -1,15 +1,13 @@
-import wykop, io, json
+import wykop
 #import mysql.connector
 
 """
 TODO:
 - user i token pobierany automatycznie?
 - dodac ranking
-- uporzadkowac otrzymane info (sam login i avatar) - JSON?!
-- zliczenie subow
 - monitorowanie sub4sub
 - zrzut do sqla
-- nie wiem
+- pobiera 25 pozycji z obserwujacych - REST next page? - nie wiem jak ale sie dowiem :| na chwile obecna jest rak XD
 """
 #MYSQL - logowanie do bazy - na pozniej
 
@@ -26,24 +24,40 @@ TODO:
 cnx = mysql.connector.connect(**config)
 cnx.close()
 """
-from ld import user, apkey, secret, accountkey
+from ld import username, apkey, secret, accountkey
 
 api = wykop.WykopAPI(apkey, secret, output='clear')
-api.authenticate(user, accountkey)
-profile = api.get_profile(user)
+api.authenticate(username, accountkey)
+profile = api.get_profile(username)
 
 profile["followers"]
 print "Obserwujacy:", profile.followers #liczymy suby
 
 profile["following"]
 print "Obserwujesz:", profile.following #liczymy zasubowanych
-"""
-subnames = api.get_profile_followers(user)
-subnames["login"]
-print "Obserwujacy:", subnames.login #nie dziala ;_;
 
-"""
+            
+for followers_list in api.get_profile_followers(username, page=1):
+   file = open('followers.txt', 'a')
+   file.write(str(followers_list['login'] + "\n"))
+   file.close()
 
+for followers_list in api.get_profile_followers(username, page=2):
+   file = open('followers.txt', 'a')
+   file.write(str(followers_list['login'] + "\n"))
+   file.close()
 
-
-
+for followers_list in api.get_profile_followers(username, page=3):
+   file = open('followers.txt', 'a')
+   file.write(str(followers_list['login'] + "\n"))
+   file.close()
+   
+for followers_list in api.get_profile_followers(username, page=4):
+   file = open('followers.txt', 'a')
+   file.write(str(followers_list['login'] + "\n"))
+   file.close()
+   
+for followers_list in api.get_profile_followers(username, page=5):
+   file = open('followers.txt', 'a')
+   file.write(str(followers_list['login'] + "\n"))
+   file.close()

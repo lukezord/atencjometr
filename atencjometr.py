@@ -36,28 +36,10 @@ print "Obserwujacy:", profile.followers #liczymy suby
 profile["following"]
 print "Obserwujesz:", profile.following #liczymy zasubowanych
 
-            
-for followers_list in api.get_profile_followers(username, page=1):
-   file = open('followers.txt', 'a')
-   file.write(str(followers_list['login'] + "\n"))
-   file.close()
+for i in range(1, 6):
+	for followers_list in api.get_profile_followers(username, page=i):
+		file = open('followers.txt', 'a')
+		file.write(str(followers_list['login'] + "\n"))
+		file.close()
 
-for followers_list in api.get_profile_followers(username, page=2):
-   file = open('followers.txt', 'a')
-   file.write(str(followers_list['login'] + "\n"))
-   file.close()
 
-for followers_list in api.get_profile_followers(username, page=3):
-   file = open('followers.txt', 'a')
-   file.write(str(followers_list['login'] + "\n"))
-   file.close()
-   
-for followers_list in api.get_profile_followers(username, page=4):
-   file = open('followers.txt', 'a')
-   file.write(str(followers_list['login'] + "\n"))
-   file.close()
-   
-for followers_list in api.get_profile_followers(username, page=5):
-   file = open('followers.txt', 'a')
-   file.write(str(followers_list['login'] + "\n"))
-   file.close()

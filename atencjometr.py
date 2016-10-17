@@ -1,45 +1,44 @@
 import wykop
-#import mysql.connector
+import sqlite3
 
 """
 TODO:
 - user i token pobierany automatycznie?
 - dodac ranking
 - monitorowanie sub4sub
-- zrzut do sqla
-
+- zrzut do db
+- sprawdzic czy tabele istnieja czy nie 
+- porownac wyniki z tymi w bazie
 """
-#MYSQL - logowanie do bazy - na pozniej
-"""
-config = {
 
-    'user': '',
-    'password': '',
-    'host': '',
-    'database': '',
-    'raise_on_warnings': True,
-    'use_pure': False,
-}
 
-cnx = mysql.connector.connect(**config)
-cnx.close()
-"""
+
 from ld import username, apkey, secret, accountkey
 
 api = wykop.WykopAPI(apkey, secret, output='clear')
 api.authenticate(username, accountkey)
 profile = api.get_profile(username)
 
-profile["followers"]
-print "Obserwujacy:", profile.followers #liczymy suby
 
-profile["following"]
-print "Obserwujesz:", profile.following #liczymy zasubowanych
 
-for i in range(1, 6):
-	for followers_list in api.get_profile_followers(username, page=i):
-		file = open('followers.txt', 'a')
-		file.write(str(followers_list['login'] + "\n"))
-		file.close()
 
+conn = sqlite3.connect('atencja.db')
+c = conn.cursor()
+#tworzymy baze
+c.execute('''CREATE TABLE IF NOT EXISTS podsumowanie
+(obserwujacy real, obserwujesz real)''')
+c.execute('''CREATE TABLE IF NOT EXISTS obserwuja
+(followers text)''')
+c.execute('''CREATE TABLE IF NOT EXISTS obserwuje
+(followed text)''')
+c.execute ("INSERT INTO podsumowanie VALUES (?, ?)", [profile["followers"], profile["following"]]) #ilosc subow
+for i in range(1, 16):
+    for followers_list in api.get_profile_followers(username, page=i):
+        c.execute ("INSERT INTO obserwuja VALUES (?)", [followers_list["login"]]) #obserwuja mnie
+for i in range(1,16):
+    for followed_list in api.get_profile_followed(username, page=i):
+        c.execute ("INSERT INTO obserwuje VALUES (?)", [followed_list["login"]]) #ja obserwuje
+
+conn.commit()
+conn.close()
 
